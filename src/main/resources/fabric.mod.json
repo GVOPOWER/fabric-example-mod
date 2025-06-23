@@ -1,9 +1,9 @@
 {
 	"schemaVersion": 1,
-	"id": "modid",
+	"id": "nightdimension",
 	"version": "${version}",
-	"name": "Example mod",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"name": "Night Dimension",
+	"description": "Adds a dimension that is a copy of the overworld without structures and is always night.",
 	"authors": [
 		"Me!"
 	],
@@ -23,16 +23,16 @@
 		]
 	},
 	"mixins": [
-		"modid.mixins.json",
+		"nightdimension.mixins.json",
 		{
-			"config": "modid.client.mixins.json",
+			"config": "nightdimension.client.mixins.json",
 			"environment": "client"
 		}
 	],
 	"depends": {
-		"fabricloader": ">=0.16.14",
-		"minecraft": "~1.21.6",
-		"java": ">=21",
+		"fabricloader": ">=0.14.21",
+		"minecraft": "~1.20.1",
+		"java": ">=17",
 		"fabric-api": "*"
 	},
 	"suggests": {

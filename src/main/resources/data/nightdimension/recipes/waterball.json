@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " S ",
+    "SWS",
+    " S "
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:snowball"
+    },
+    "W": {
+      "item": "minecraft:water_bucket"
+    }
+  },
+  "result": {
+    "item": "nightdimension:waterball",
+    "count": 4
+  }
+}

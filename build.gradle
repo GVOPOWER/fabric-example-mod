@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version "${loom_version}"
+	id 'fabric-loom' version '1.4-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -22,7 +22,7 @@ loom {
 	splitEnvironmentSourceSets()
 
 	mods {
-		"modid" {
+		"nightdimension" {
 			sourceSet sourceSets.main
 			sourceSet sourceSets.client
 		}
@@ -38,7 +38,7 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	
+
 }
 
 processResources {
@@ -47,10 +47,14 @@ processResources {
 	filesMatching("fabric.mod.json") {
 		expand "version": inputs.properties.version
 	}
+
+	// Exclude the old modid.mixins.json files to avoid conflicts
+	exclude "modid.mixins.json"
+	exclude "modid.client.mixins.json"
 }
 
 tasks.withType(JavaCompile).configureEach {
-	it.options.release = 21
+	it.options.release = 19
 }
 
 java {
@@ -59,8 +63,24 @@ java {
 	// If you remove this line, sources will not be generated.
 	withSourcesJar()
 
-	sourceCompatibility = JavaVersion.VERSION_21
-	targetCompatibility = JavaVersion.VERSION_21
+	sourceCompatibility = JavaVersion.VERSION_19
+	targetCompatibility = JavaVersion.VERSION_19
+}
+
+// Configure the run tasks to explicitly use Java 19
+// This is necessary because Fabric and its mixin system have compatibility issues with newer Java versions (like Java 23)
+// The "Unsupported class file major version 67" error occurs when trying to run with Java 23
+tasks.withType(JavaExec).configureEach {
+	javaLauncher.set(javaToolchains.launcherFor {
+		languageVersion = JavaLanguageVersion.of(19)
+	})
+
+	// Apply memory settings from gradle.properties
+	if (project.hasProperty("minecraft_java_args")) {
+		minHeapSize = project.minecraft_java_args.split(" ")[1].replace("-Xms", "")
+		maxHeapSize = project.minecraft_java_args.split(" ")[0].replace("-Xmx", "")
+		jvmArgs = project.minecraft_java_args.split(" ").toList()
+	}
 }
 
 jar {

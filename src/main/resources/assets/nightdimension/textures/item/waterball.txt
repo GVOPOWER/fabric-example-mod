@@ -1,0 +1,2 @@
+This file is no longer needed as we are now using the heart of the sea texture from Minecraft.
+The texture path is set to "minecraft:item/heart_of_the_sea" in the model JSON file.
